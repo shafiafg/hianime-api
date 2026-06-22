@@ -12,7 +12,7 @@ const config = {
   enableLogging: false,
   isProduction: true,
   isDevelopment: false,
-  isVercel: false,
+  isVercel: true,
 };
 
 export default config;

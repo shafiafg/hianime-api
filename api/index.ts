@@ -9,12 +9,14 @@ import { fail } from '../src/utils/response';
 
 const app = new Hono();
 
-// CORS Configuration
-const origins = config.origin.includes(',')
-  ? config.origin.split(',').map(o => o.trim())
-  : config.origin === '*'
+// CORS Configuration (FIXED TO PREVENT 500 CRASH)
+const rawOrigin = config?.origin || '*';
+
+const origins = rawOrigin.includes(',')
+  ? rawOrigin.split(',').map((o: string) => o.trim())
+  : rawOrigin === '*'
     ? '*'
-    : [config.origin];
+    : [rawOrigin];
 
 app.use(
   '*',
@@ -29,7 +31,7 @@ app.use(
 );
 
 // Logging
-if (!config.isProduction || config.enableLogging) {
+if (!config?.isProduction || config?.enableLogging) {
   app.use('/api/v2/*', logger());
 }
 
@@ -59,4 +61,5 @@ app.notFound((c) => {
   return fail(c, 'Route not found', 404);
 });
 
+export default handle(app);
 export default handle(app);

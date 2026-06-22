@@ -10,13 +10,15 @@ import { fail } from '../src/utils/response';
 const app = new Hono();
 
 // CORS Configuration (FIXED TO PREVENT 500 CRASH)
-const rawOrigin = config?.origin || '*';
+// CORS Configuration (Ultra-Defensive)
+// We ignore the config object for this specific check to avoid bundler errors
+const rawOrigin = (typeof config !== 'undefined' && config.origin) ? config.origin : '*';
 
-const origins = rawOrigin.includes(',')
+const origins = (typeof rawOrigin === 'string' && rawOrigin.includes(','))
   ? rawOrigin.split(',').map((o: string) => o.trim())
   : rawOrigin === '*'
     ? '*'
-    : [rawOrigin];
+    : [rawOrigin || '*']; // Final safety fallback
 
 app.use(
   '*',

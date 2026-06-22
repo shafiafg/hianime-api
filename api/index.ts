@@ -62,4 +62,3 @@ app.notFound((c) => {
 });
 
 export default handle(app);
-export default handle(app);

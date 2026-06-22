@@ -3,26 +3,21 @@ import { handle } from 'hono/vercel';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 
-// UPDATED IMPORTS (Relative to the api folder)
 import hiAnimeRoutes from './routes/routes';
 import config from './config/config';
 import { AppError } from './utils/errors';
 import { fail } from './utils/response';
 
-const app = new Hono();
-// ... rest of your code stays the same!
+// We only declare this ONCE!
 const app = new Hono();
 
-// CORS Configuration (FIXED TO PREVENT 500 CRASH)
-// CORS Configuration (Ultra-Defensive)
-// We ignore the config object for this specific check to avoid bundler errors
+// CORS Configuration
 const rawOrigin = (typeof config !== 'undefined' && config.origin) ? config.origin : '*';
-
 const origins = (typeof rawOrigin === 'string' && rawOrigin.includes(','))
   ? rawOrigin.split(',').map((o: string) => o.trim())
   : rawOrigin === '*'
     ? '*'
-    : [rawOrigin || '*']; // Final safety fallback
+    : [rawOrigin || '*'];
 
 app.use(
   '*',

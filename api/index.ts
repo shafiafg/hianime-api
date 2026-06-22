@@ -2,11 +2,15 @@ import { Hono } from 'hono';
 import { handle } from 'hono/vercel';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
-import hiAnimeRoutes from '../src/routes/routes';
-import config from '../src/config/config';
-import { AppError } from '../src/utils/errors';
-import { fail } from '../src/utils/response';
 
+// UPDATED IMPORTS (Relative to the api folder)
+import hiAnimeRoutes from './routes/routes';
+import config from './config/config';
+import { AppError } from './utils/errors';
+import { fail } from './utils/response';
+
+const app = new Hono();
+// ... rest of your code stays the same!
 const app = new Hono();
 
 // CORS Configuration (FIXED TO PREVENT 500 CRASH)
